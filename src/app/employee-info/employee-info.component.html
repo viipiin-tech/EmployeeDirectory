@@ -1,0 +1,23 @@
+<h2>
+  MEAN Application - Employee Directory App
+</h2>
+<table class="table table-striped">
+			<tr >
+				<th><label>Name</label></th>
+		<th><label>Email</label></th>
+		<th><label>DOB</label></th>
+		<th><label>Department</label></th>
+		<th><label>Gender</label></th>
+		<th><label>Age</label></th>
+			</tr><tr>
+			<td> <input [(ngModel)]="employee.name" type="text" placeholder="Name"/></td>
+			<td> <input [(ngModel)]="employee.email" type="text" placeholder="Email"/></td>
+			<td>  <input [(ngModel)]="employee.dob" type="date" placeholder="DOB"/></td>
+			<td> <input [(ngModel)]="employee.department" type="text" placeholder="Department"/></td>
+			<td> <input [(ngModel)]="employee.gender" type="text" placeholder="Gender"/></td>
+			<td><input [(ngModel)]="employee.age" type="text"placeholder="Age" readonly/></td>
+			<td><button (click)="addBook()">Add Employee</button></td>
+			<td> <button (click)="addBook()">Update Employee</button></td>
+			</tr>
+			</table>
+ 
