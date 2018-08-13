@@ -35,6 +35,7 @@ employee:IEmployee;
         age: [''],
       
     })
+    this.getContacts();
   }
   
     get email() { return this.employeeForm.get('email'); }
@@ -76,7 +77,10 @@ employee:IEmployee;
         }
     }
   
-  
+   getContacts() {
+    this.employeeService.getEmployeeHttp().subscribe((employeeList) => {this.employeeList = employeeList}
+                                                                     ,(err) => console.log('Error', err));
+  }
    save():void { 
      console.log(this.employee);
    

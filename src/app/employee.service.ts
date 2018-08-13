@@ -49,6 +49,15 @@ export class EmployeeService {
         let body = res.json();
         return body || {};
     }
+  
+    getEmployeeHttp(): Observable<IEmployee[]> {
+    let getUrl = "https://young-springs-16530.herokuapp.com/employee";
+    return this.http
+        .get(getUrl, this.options)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }  
+  
 
     private handleError(error: any) {
         let errMsg = (error.message) ? error.message :
