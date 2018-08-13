@@ -4,6 +4,10 @@ import {RouterModule} from '@angular/router';
 import { AppComponent } from './app.component';
 import { EmployeeInfoComponent } from './employee-info/employee-info.component';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { EmployeeService } from './employee.service';
+import { HttpClientModule } from '@angular/common/http'; 
+import { HttpModule } from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -11,13 +15,13 @@ import { FormsModule } from '@angular/forms';
     EmployeeInfoComponent
   ],
   imports: [
-    BrowserModule, RouterModule,FormsModule, RouterModule.forRoot([
+    BrowserModule,HttpModule, HttpClientModule, ReactiveFormsModule, RouterModule,FormsModule, RouterModule.forRoot([
       {path: 'app-employee-info', component: EmployeeInfoComponent},
       
 
     ])
   ],
-  providers: [],
+  providers: [EmployeeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
