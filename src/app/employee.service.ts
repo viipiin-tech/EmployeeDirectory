@@ -63,10 +63,10 @@ getEmployeeHttp(): Observable < IEmployee[] > {
 }
   
   
-deleteEmployeeWithId(key: string, val: string): Observable < IEmployee[] > {
-  let deleteUrl = "https://young-springs-16530.herokuapp.com/delete";
+deleteEmployeeWithId(user: IEmployee): Observable < IEmployee[] > {
+  let deleteUrl = "https://young-springs-16530.herokuapp.com/delete" + "/" + user._id;
   return this.http
-    .delete(deleteUrl + "/" + val, this.options).map(this.extractData).catch(this.handleError);
+    .delete(deleteUrl, this.options).map(this.extractData).catch(this.handleError);
 }
   
 updateEmployeeWithId(user: IEmployee): Observable < IEmployee[] > {
