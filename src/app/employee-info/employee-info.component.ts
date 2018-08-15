@@ -1,8 +1,8 @@
 import { EmployeeService } from '../employee.service';
 import { Component, OnInit } from '@angular/core';
 import { IEmployee } from './employee';
-import { FormControl, FormGroup,FormBuilder,NgForm, Validators  } from '@angular/forms';
-
+import { FormControl, FormGroup, FormBuilder, NgForm, Validators  } from '@angular/forms';
+import { UUID } from 'angular2-uuid';
 
 @Component({
   selector: 'app-employee-info',
@@ -10,21 +10,22 @@ import { FormControl, FormGroup,FormBuilder,NgForm, Validators  } from '@angular
   styleUrls: ['./employee-info.component.css']
 })
 export class EmployeeInfoComponent implements OnInit {
-employee:IEmployee;
+currentRow: IEmployee;
   isDisabled: boolean = true;
   employeeForm: FormGroup;
-  added: boolean = false;
-  employeeList:IEmployee[]= new Array();;
+  modeValue: any;
+  employeeList:IEmployee[] = new Array();
+  
     
   
 
   constructor(private fb:FormBuilder,  private employeeService: EmployeeService) { }
 
   ngOnInit() {
-    
+    this.getEmployee();
     
     this.employeeForm = this.fb.group ({
-      _id: [''],
+      _id:[''],
        name: ['', Validators.required],
         email: ['',
     [Validators.required, 
@@ -35,9 +36,9 @@ employee:IEmployee;
         age: [''],
       
     })
-    this.getContacts();
+
   }
-  
+
     get email() { return this.employeeForm.get('email'); }
      
     get name() { return this.employeeForm.get('name'); }
@@ -52,42 +53,87 @@ employee:IEmployee;
   
   public onFormSubmit() {
         if(this.employeeForm.valid) {
-            this.employee = this.employeeForm.value;
+          this.currentRow = this.employeeForm.value;
           this.CalculateAge();
-          console.log(this.employee);
-          
+          console.log(this.currentRow);
+
             /* Any API call logic via services goes here */
           this.save();
-          this.added = true;
-          this.employeeList.push(this.employee);
-          this.employee=new IEmployee();
+          
+          this.employeeList.push(this.currentRow);
+          this.currentRow = new IEmployee();
+           console.log("Form Submitted!");
+         this.employeeForm.reset();
         }
     }
+  
+
   
    public CalculateAge(): void
      {
-         if(this.employee.dob){
+         if(this.currentRow.dob){
             
-         let dob:any = new Date(this.employee.dob).getTime();
+         let dob:any = new Date(this.currentRow.dob).getTime();
             let timeDiff : any = Date.now() - dob;
             //Used Math.floor instead of Math.ceil
             //so 26 years and 140 days would be considered as 26, not 27.
-            this.employee.age = Math.abs(new Date(timeDiff).getUTCFullYear()-1970);
-           this.employeeForm.setValue(this.employee);
+            this.currentRow.age = Math.abs(new Date(timeDiff).getUTCFullYear()-1970);
+           this.employeeForm.setValue(this.currentRow);
         }
     }
   
-   getContacts() {
-    this.employeeService.getEmployeeHttp().subscribe((employeeList) => {this.employeeList = employeeList}
-                                                                     ,(err) => console.log('Error', err));
+  editEmployee = function (employee:IEmployee) {  
+    this.currentRow = Object.assign({}, employee);
+  }; 
+  
+  getTemplate = function (employee:IEmployee) {  
+    if (employee._id === this.selected._id){  
+        return 'edit';  
+    }  
+    else return 'display';  
+};
+  
+  
+   getEmployee() {
+    this.employeeService.getEmployeeHttp().subscribe((data) => { this.employeeList=data}
+                                                               ,(err) => console.log('Error', err));
+    
   }
+  
+   updateEmployee(employee:IEmployee):void{
+     console.log(employee);
+   
+
+   this.employeeService.updateEmployeeWithId("_id",employee._id).subscribe((users) => {
+                                                                                       this.employeeList = users
+                                                                                       this.getEmployee();
+                                                                                      },
+                                                                        ((err) => console.log('Error', err)));
+    
+  }
+  
+  removeEmployee(employee:IEmployee):void{
+      console.log(employee);
+
+   this.employeeService.deleteEmployeeWithId("_id",employee._id).subscribe((users) => {
+                                                                                       this.employeeList = users
+                                                                                       this.getEmployee();
+                                                                                      },
+                                                                        ((err) => console.log('Error', err)));
+    
+  }
+  
+   
+  
    save():void { 
-     console.log(this.employee);
+     this.modeValue = 'add';
+   
+     console.log(this.currentRow);
    
   //  this.employee = new employee:IEmployee('', this.employeeForm.value.name, this.employeeForm.value.email, this.employeeForm.value.dob, this.employeeForm.department, this.employeeForm.value.gender,, this.employeeForm.value.age);
-    this.employeeService.postEmployee(this.employee).subscribe((data) => {console.log('Success', data)}
+    this.employeeService.postEmployee(this.currentRow).subscribe((data) => {console.log('Success', data), this.currentRow=data}
       , (err) => console.log('Error', err));
-
+ console.log(this.currentRow);
   }
 
 }

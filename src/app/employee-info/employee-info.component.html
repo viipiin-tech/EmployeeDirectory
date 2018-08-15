@@ -23,19 +23,25 @@
 			<td> <input formControlName = "gender" type="text" placeholder="Gender"/></td>
 			<td><input formControlName = "age" type="text" placeholder="Age" readonly/></td>
 			<td><button (click)="onFormSubmit()">Add Employee</button></td>
-			<td> <button (click)="addBook()">Update Employee</button></td>
+			<td> <button (click)="updateEmployee(currentRow)">Update Employee</button></td>
 			<td><input  formControlName = "_id" type="hidden" /></td>
 			</tr>
-			<tr *ngIf="added" >
+			
 			<ng-container *ngFor="let employee of employeeList">
+			<tr >
+
 				<td><label>{{employee.name}}</label></td>
 		<td><label>{{employee.email}}</label></td>
 		<td><label>{{employee.dob}}</label></td>
 		<td><label>{{employee.department}}</label></td>
 		<td><label>{{employee.gender}}</label></td>
 		<td><label>{{employee.age}}</label></td>
-		</ng-container>
+		<td> <button class="btn btn-default"  type="button" (click)="editEmployee(employee)">Edit</button></td>
+    <td>   <button class="btn btn-default"  type="button" (click)="removeEmployee(employee)">Delete</button>
+            </td>
 			</tr>
+			</ng-container>
+
 			</table>
 			
 			</div>

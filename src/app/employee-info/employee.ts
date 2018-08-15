@@ -1,3 +1,5 @@
+
+
 export class IEmployee {
   _id: string;
   name: string;
@@ -6,6 +8,8 @@ export class IEmployee {
   department: string;
   gender: string;
   age: number;
+  
+  
 
    
 }

@@ -50,13 +50,33 @@ export class EmployeeService {
         return body || {};
     }
   
+    private getData(res: Response) {
+        let body = res._body;
+        return JSON.parse(body) || {};
+    }
+  
     getEmployeeHttp(): Observable<IEmployee[]> {
     let getUrl = "https://young-springs-16530.herokuapp.com/employee";
     return this.http
         .get(getUrl, this.options)
-        .map(this.extractData)
+        .map(this.getData)
         .catch(this.handleError);
     }  
+  
+  deleteEmployeeWithId(key: string, val: string): Observable<IEmployee[]> {
+     let deleteUrl = "https://young-springs-16530.herokuapp.com/delete";
+    return this.http
+      .delete(deleteUrl + "/" + val, this.options).map(this.extractData).catch(this.handleError)
+    ;
+  }
+  
+  updateEmployeeWithId(key: string, val: string): Observable<any> {
+     let updateUrl = "https://young-springs-16530.herokuapp.com/update"+ "/" + val;
+    return this.http
+      .delete(updateUrl, this.options).pipe(retry(3),
+      catchError(this.handleError)
+    );
+  }
   
 
     private handleError(error: any) {

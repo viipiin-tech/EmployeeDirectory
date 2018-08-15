@@ -16,3 +16,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border-width: thin;
 }
 } 
+
+a.btn {
+     -webkit-transform: scale(0.8);
+     -moz-transform: scale(0.8);
+     -o-transform: scale(0.8);
+     -webkit-transition-duration: 0.5s;
+     -moz-transition-duration: 0.5s;
+     -o-transition-duration: 0.5s;
+ }
